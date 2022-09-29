@@ -190,7 +190,7 @@
     "yocto-queue": "^0.1.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node server.js"
   },
   "repository": {
@@ -202,5 +202,8 @@
   "bugs": {
     "url": "https://github.com/KeeveRW11/just-tech-news/issues"
   },
-  "homepage": "https://github.com/KeeveRW11/just-tech-news#readme"
+  "homepage": "https://github.com/KeeveRW11/just-tech-news#readme",
+  "devDependencies": {
+    "jest": "^29.1.1"
+  }
 }
