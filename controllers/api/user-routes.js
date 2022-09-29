@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { User, Post, Vote } = require("../../models");
+const { User, Post, Comment, Vote } = require('../../models');
 
 router.get('/', (req, res) => {
     User.findAll({
@@ -22,6 +22,14 @@ router.get('/:id', (req, res) => {
             {
                 model: Post,
                 attributes: ['id', 'title', 'post_url', 'created_at']
+            },
+            {
+                model: Comment,
+                attributes: ['id', 'comment_text', 'created_at'],
+                include: {
+                  model: Post,
+                  attributes: ['title']
+                }
             },
             {
                 model: Post,
@@ -60,6 +68,10 @@ router.post('/', (req, res) => {
             res.json(dbUserData);
         });
     })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    });
 });
 
 router.post('/login', (req, res) => {
@@ -91,14 +103,25 @@ router.post('/login', (req, res) => {
     });
 });
 
+router.post('/logout', (req, res) => {
+    if(req.session.loggedIn) {
+        req.session.destroy(() => {
+            res.status(204).end();
+        });
+    } else {
+        res.status(404).end();
+    }
+})
+
 router.put('/:id', (req, res) => {
     User.update(req.body, {
+        individualHooks: true,
         where: {
             id: req.params.id
         }
     })
     .then(dbUserData => {
-        if (!dbUserData[0]) {
+        if (!dbUserData) {
             res.status(404).json({ message: 'No user found with this id' });
             return;
         }

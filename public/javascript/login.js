@@ -1,5 +1,3 @@
-const { response } = require("express");
-
 async function loginFormHandler(event) {
     event.preventDefault();
   
@@ -41,15 +39,15 @@ async function signupFormHandler(event) {
             }),
             headers: { 'Content-Type': 'application/json' }
         });
-        if (response.ok) {
-            console.log('success');
-        } else {
-            alert(response.statusText);
-        }
+        
+     if (response.ok) {
+      document.location.replace('/');
+    } else {
+      alert(response.statusText);
     }
+  }
 }
-
-
   
 document.querySelector('.login-form').addEventListener('submit', loginFormHandler);
+
 document.querySelector('.signup-form').addEventListener('submit', signupFormHandler);
